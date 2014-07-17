@@ -1,3 +1,5 @@
+package org.technologyhatchery.appengine;
+
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
