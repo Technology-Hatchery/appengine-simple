@@ -42,16 +42,28 @@ public class RenjinServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        /*
+        // This is another way to create a Renjin script engine
+        // create a script engine manager
+        ScriptEngineManager manager = new ScriptEngineManager();
+        // create a Renjin engine:
+        ScriptEngine engine = manager.getEngineByName("Renjin");
+        // check if the engine has loaded correctly:
+        if(engine == null) {
+            throw new RuntimeException("Renjin Script Engine not found on the classpath.");
+        }*/
+
+        //TODO-Alfred Figure out how this code is able to get a Renjin engine
         ScriptEngine engine = ENGINE.get();
         if(engine == null) {
-            // create a new engine for this thread
+            // create a new engine for this thread (this calls the Renjin library)
             engine = AppEngineContextFactory.createScriptEngine(servletContext);
             if(engine == null) {
                 throw new ServletException("Could not create Renjin ScriptEngine");
             }
 
-            // load our application script
-            String scriptPath = servletContext.getRealPath("WEB-INF/app.R");
+            // load the application script
+            String scriptPath = servletContext.getRealPath("WEB-INF/R/app.R");
             Reader reader = new FileReader(scriptPath);
             
             try {
@@ -61,6 +73,7 @@ public class RenjinServlet extends HttpServlet {
                 return;
             }
 
+            //Read data in from json file
             scriptPath = servletContext.getRealPath("WEB-INF/json/sampleData.json");
             reader = new FileReader(scriptPath);
 
